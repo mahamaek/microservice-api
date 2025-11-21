@@ -24,7 +24,7 @@ order = {
 
 @app.get('/orders')
 def get_orders():
-    return {'orders': order}
+    return {'orders': [order]}
 
 
 @app.post('/orders', status_code=status.HTTP_201_CREATED)
@@ -44,7 +44,7 @@ def update_order(order_id: UUID):
 
 @app.delete('/orders/{order_id}',status_code=status.HTTP_204_NO_CONTENT)
 def delete_order(order_id: UUID):
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return Response(status_code=HTTPStatus.NO_CONTENT.value)
 
 
 @app.post('/orders/{order_id}/cancel')
