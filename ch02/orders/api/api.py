@@ -6,6 +6,7 @@ from starlette.responses import Response
 from starlette import status
 
 from orders.app import app
+from orders.api.schemas import CreateOrderSchema, GetOrdersSchema, OrderItemSchema
 
 order = {
 
@@ -28,7 +29,7 @@ def get_orders():
 
 
 @app.post('/orders', status_code=status.HTTP_201_CREATED)
-def create_order():
+def create_order(order_details: CreateOrderSchema):
     return order
 
 
@@ -38,7 +39,7 @@ def get_order(order_id: UUID):
 
 
 @app.put('/orders/{order_id}')
-def update_order(order_id: UUID):
+def update_order(order_id: UUID, order_details: CreateOrderSchema):
     return order
 
 
