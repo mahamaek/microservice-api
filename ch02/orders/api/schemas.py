@@ -33,7 +33,12 @@ class CreateOrderSchema(BaseModel):
     order: Annotated[List[OrderItemSchema], Field(min_items=1)]
 
 
-class GetOrdersSchema(BaseModel):
+class GetOrderSchema(CreateOrderSchema):
     id: UUID
     created: datetime
     status: Status
+
+class GetOrdersSchema(BaseModel):
+    # orders: Annotated[List[GetOrderSchema], Field(min_items=0)]
+    orders: List[GetOrderSchema]
+
