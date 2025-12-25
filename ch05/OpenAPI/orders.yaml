@@ -1,0 +1,119 @@
+paths:
+  /orders:
+    get: #retrive all orders
+      operationId: getOrders
+      parameters: # this is where we defined parameters
+        - name: cancelled
+          in: query
+          required: false
+          schema:
+            type: boolean
+
+        - name: limite
+          in: query
+          required: false
+          schema:
+            type: integer
+
+    post: # Creates a new order
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderSchema'
+
+  /orders/{order_id}:
+    get:
+      operationId: getOrder
+      responses:
+      '200':
+        description: OK
+        content:
+         application/json:
+          schema:
+            $ref: '#/components/schemas/GetOrderSchema'
+           
+
+    put:
+      operationId: updateOrder
+      parameters:
+        - name : order_id
+          in : path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderSchema'
+
+    delete:
+      operationId: deleteOrder
+
+  /orders/{order_id}/pay:
+    post:
+      operationId: payOrder
+
+  /orders/{order_id}/cancel:
+    post:
+      operationId: cancelOrder
+
+components:
+  schemas:
+    OrderItemSchema:
+      type: object
+      required:
+        - product
+        - size
+      properties:
+        product:
+          type: string
+        size: 
+          type: string
+          enum:
+            - small
+            - medium
+            - big
+        quantity:
+          type: integer
+          required: false
+          default: 1
+   
+    CreateOrderSchema:
+      type: object
+      required:
+       - order
+      properties:
+        order:
+          type: array
+          items:
+          $ref: '#/components/schemas/OrderItemSchema'
+
+    GetOrderSchema:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - created
+            - paid
+            - progress
+            - cancelled
+            - dispatched
+            - delivered
+        created:
+          type: string
+          format: data-time
+        order:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateOrderSchema'
+
+
+
+

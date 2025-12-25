@@ -1,0 +1,19 @@
+{
+    "order":
+    {
+        "type": "object",
+        "properties":{
+            "product":{
+                "type":"string"
+            },
+            "size":{
+                "type":"string"
+            },
+            "quantity":{
+                "type":"string"
+            }
+        }
+
+    }
+
+}
