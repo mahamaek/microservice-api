@@ -1,0 +1,286 @@
+paths:
+  /orders:
+    get:
+      operationId: getOrders
+      parameters:
+        - name: cancelled
+          in: query
+          required: false
+          schema:
+            type: boolean
+
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#components/schemas/GetOrderSchema'
+                required:
+                  - orders
+
+    post:
+      operationId: createOrder
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schema/CreateOrderSchema'
+              # type: object
+              # properties:
+              #   order:
+              #     type: array
+              #     items:
+              #       type: object
+              #       properties:
+              #         product:
+              #           type: string
+              #           required: true
+
+              #         size:
+              #           type: string
+              #           enum:
+              #             - small
+              #             - medium
+              #             - big
+              #           required: true
+
+              #         quantity:
+              #           type: integer
+              #           required: false
+              #           default: 1
+              #       required:
+              #         - product
+              #         - size
+                      
+
+  /orders/{order_id}:
+    get:
+      summary: Return the details of a specific order
+      operationId: getOrder
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/GetOrderSchema'
+        '404':
+          $ref: '#components/responses/NotFound'
+    put:
+      operationId: updateOrder
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/CreateOrderSchema'
+
+    delete:
+      operationId: deleteOrder
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 
+
+        '404':
+          $ref: '#components/responses/NotFound'
+
+  /orders/{order_id}/pay:
+    operationId: payOrder
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+
+    parameters:
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: 
+      '404':
+        $ref: '#components/responses/NotFound'
+
+  /orders/{order_id}/cancel:
+    operationId: cancelOrder
+    parameters:
+    responses:
+    
+components:
+  schemas:
+    OrderItemScheam:
+      type: object
+      properties:
+        product:
+          type: string
+        size:
+          type: string
+          enum:
+            - small
+            - medium
+            - big
+        quantity:
+          type: integer
+          required: false
+          default: 1    
+      required:
+      - product
+      - size  
+
+    CreateOrderSchema:
+      type: object
+      properties:
+        order:
+          type: array
+          items:
+            $ref: '#components/schemas/OrderItemScheam'
+            # type: object
+            # properties:
+            #   product:
+            #     type: string
+            #   size:
+            #     type: string
+            #     enum:
+            #       - small
+            #       - medium
+            #       - big
+            #   quantity:
+            #     type: integer
+            #     required: false
+            #     default: 1
+            # required:
+            #   - product
+            #   - size
+    
+    GetOrderSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - created 
+            - paid
+            - progress
+            - cancelled
+            - dispatched
+            - delivered
+        created:
+          type: string
+          format: date-time
+        order:
+          type: array
+          items: 
+            $ref: '#components/schemas/CreateOrderSchema'
+    # Model composition
+    GetOrderSchemaV2:
+      allOf:
+        - id:
+          type: string
+          format: uuid
+        - $ref: '#components/schemas/CreateOrderSchema'
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - created 
+                - paid
+                - progress
+                - cancelled
+                - dispatched
+                - delivered
+            created:
+              type: string
+              format: date-time
+    
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+        required:
+          - detail
+
+  responses:
+    NotFound:
+      description: The specified resource was not NotFound
+      content:
+        application/json:
+          schema:
+            $ref: 'components/schemas/Error'
+
+  securitySchemes:
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: https://coffeemesh-dev.eu.auth0.com/.well-known/openid-configuration
+
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://coffeemesh-dev.eu.auth0.com/oauth/token
+          sopes: {}
+    
+    bearerAauth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+    security:
+      - oauth2:
+        - getOrders
+        - getOrder
+        - createOrder
+        - updateOrder 
+        - deleteOrder
+        - payOrder
+        - cancelOrder
+      - bearerAauth:
+        - getOrders
+        - getOrder
+        - createOrder
+        - updateOrder 
+        - deleteOrder
+        - payOrder
+        - cancelOrder
