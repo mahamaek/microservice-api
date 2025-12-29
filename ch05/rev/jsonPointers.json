@@ -1,0 +1,33 @@
+{
+    "def":{
+        "OrderItemSchema":{
+            "type": "object",
+            "properties":{
+                "product":{
+                    "type": "string"
+                },
+                "size":{
+                    "type":"string"
+                },
+                "quantity":{
+                    "type": "number"
+                }        
+            }
+        }
+    },
+
+    "Order":{
+        "type":"object",
+        "properties":{
+            "status":{
+                "type":"string"
+            },
+            "order":{
+                "type": "array",
+                "items":{
+                    "$ref":"#/def/OrderItemSchema"
+                }
+            }
+        }
+    }  
+}
