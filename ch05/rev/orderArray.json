@@ -1,0 +1,20 @@
+{
+    "order":{
+        "type": "array",
+        "items":{
+            "type": "object",
+            "properties":{
+                "product":{
+                    "type": "string"
+                },
+                "size":{
+                    "type":"string"
+                },
+                "quantity":{
+                    "type": "number"
+                }
+
+            }
+        }
+    }
+}
