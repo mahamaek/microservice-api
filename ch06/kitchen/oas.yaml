@@ -76,6 +76,51 @@ paths:
 
 
   /kitchen/schedules/{schedule_id}:
+    parameters:
+      - name: schedule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Returns the status and details of a scheduled order
+      tags:
+        - kitchen
+      responses:
+        '200':
+          description: A JSON representation of a scheduled order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleOrderSchema'
+        '404':
+           $ref: '#/components/responses/NotFound'
+
+    put:
+      summary: Updates an existing scheduled order
+      tags:
+        - kitchen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleOrderSchema'
+      responses:
+        '200':
+          description: A JSON representation of a scheduled order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetScheduledOrderSchema'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+
+
+    delete:
+
   /kitchen/schedules/{schedule_id}/status:
   /kitchen/schedules/{schedule_id}/cancel:
 
