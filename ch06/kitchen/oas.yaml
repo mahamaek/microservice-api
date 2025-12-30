@@ -125,9 +125,50 @@ paths:
         '204':
           description: The resource was deleted successfully
 
-  /kitchen/schedules/{schedule_id}/status:
   /kitchen/schedules/{schedule_id}/cancel:
+    parameters:
+      - name: schedule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      summary: Cancels a scheduled order
+      tags:
+        - kitchen
+      responses:
+        '200':
+          description: A JSON representation of a scheduled order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleOrderSchema'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
 
+
+  /kitchen/schedules/{schedule_id}/status:
+    parameters:
+      - name: schedule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Returns the status of a scheduled order
+      tags:
+        - kitchen
+      responses:
+        '200':
+          description: Returns the status of a scheduled order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleStatusSchema'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
 components:
