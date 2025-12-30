@@ -117,9 +117,13 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-
-
     delete:
+      summary: Deletes an existing order
+      tags:
+        - kitchen
+      responses:
+        '204':
+          description: The resource was deleted successfully
 
   /kitchen/schedules/{schedule_id}/status:
   /kitchen/schedules/{schedule_id}/cancel:
