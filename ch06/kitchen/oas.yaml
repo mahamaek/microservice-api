@@ -182,6 +182,77 @@ components:
   schemas:
     Error:
       type: object
+      properties:
+        error:
+          type: string
+
+    OrderItemSchema:
+      additionalProperties: false
+      type: object
+      required:
+        - product
+        - quantity
+      properties:
+        product:
+          type: string
+        size:
+          type: string
+          enum:
+            - small
+            - medium
+            - big
+        quantity:
+          type: integer
+          minimum: 1
+
+    ScheduleOrderSchema:
+      additionalProperties: false
+      type: object
+      properties:
+        order:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemSchema'
+
+    GetScheduledOrderSchema:
+      type: object
+      additionalProperties: false
+      required:
+        - id 
+        - order
+        - scheduled
+        - status
+      properties:
+        id: 
+          type: string
+          format: uuid
+        scheduled:
+          type: string
+          format: 'date-time'
+        status:
+          type: string
+          enum:
+            - pending
+            - progress
+            - cancelled
+            - finished
+        order:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemSchema'
+    ScheduleStatusSchema:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - pending
+            - progress
+            - cancelled
+            - finished
 
         
 
