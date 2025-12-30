@@ -49,7 +49,31 @@ paths:
                 type: object
                 properties:
                   schedules:
-                    $ref: '#components/schemas/GetScheduledOrderSchema'
+                    type: array
+                    items:
+                      $ref: '#components/schemas/GetScheduledOrderSchema'
+    
+    post:
+      summary: Schedules an order for production
+      tags:
+        - kitchen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schema/ScheduleOrderSchema'
+              
+      responses:
+        '201':
+          description: A JSON representation of the scheduled order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetScheduledOrderSchema'
+
+
+
 
   /kitchen/schedules/{schedule_id}:
   /kitchen/schedules/{schedule_id}/status:
