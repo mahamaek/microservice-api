@@ -41,7 +41,7 @@ class KitchenSchedules(MethodView):
         for schedule in schedules:
             schedule = copy.deepcopy(schedule)
             schedule['scheduled'] = schedule['scheduled'].isoformat()
-            errors = GetScheduledOrderSchema.validate(schedule)
+            errors = GetScheduledOrderSchema().validate(schedule)
             if errors:
                 raise ValidationError(errors)
 
