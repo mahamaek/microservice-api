@@ -30,14 +30,15 @@ class GetScheduledOrderSchema(ScheduleOrderSchema):
     scheduled = fields.DateTime(required=True)
     status = fields.String(
         required=True,
-        validate=validate.OneOf(["pending", "progress", "cancelled", " finished"]))
+        validate=validate.OneOf(["pending", "progress", "cancelled", "finished"]))
 
 
 class GetScheduledOrdersSchema(Schema):
     class Meta:
         unknown = EXCLUDE
-        schedules = fields.List(fields.Nested(
-            GetScheduledOrderSchema), required=True)
+
+    schedules = fields.List(fields.Nested(
+        GetScheduledOrderSchema), required=True)
 
 
 class ScheduleStatusSchema(Schema):
