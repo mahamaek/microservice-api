@@ -3,6 +3,7 @@ from datetime import datetime
 from flask.views import MethodView
 from flask_smorest import Blueprint
 import copy
+from flask import abort
 
 from marshmallow import ValidationError
 
@@ -31,6 +32,16 @@ schedules = [
     }
 ]
 
+schedules = []
+
+
+def validate_schedule(schedule):
+    schedule = copy.deepcopy(schedule)
+    schedule['scheduled'] = schedule['scheduled'].isoformat()
+    errors = GetScheduledOrderSchema().validate(schedule)
+    if errors:
+        raise ValidationError(errors)
+
 
 @blueprint.route('/kitchen/schedules')
 class KitchenSchedules(MethodView):
@@ -39,11 +50,7 @@ class KitchenSchedules(MethodView):
     def get(self, parameters):
         # response validation with marshmallow
         for schedule in schedules:
-            schedule = copy.deepcopy(schedule)
-            schedule['scheduled'] = schedule['scheduled'].isoformat()
-            errors = GetScheduledOrderSchema().validate(schedule)
-            if errors:
-                raise ValidationError(errors)
+            validate_schedule(schedule)
 
         if not parameters:
             return {'schedules': schedules}
