@@ -86,7 +86,7 @@ class KitchenSchedules(MethodView):
     @blueprint.response(status_code=201, schema=GetScheduledOrderSchema)
     def post(self, payload):
         payload['id'] = str(uuid.uuid4())
-        payload['scheduled'] = datetime.now(datetime.timezone.utc)
+        payload['scheduled'] = datetime.utcnow()
         payload['status'] = 'pending'
         schedules.append(payload)
         validate_schedule(payload)
