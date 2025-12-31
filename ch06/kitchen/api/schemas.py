@@ -14,3 +14,36 @@ class OrderItemSchema(Schema):
     quantity = fields.Integer(
         required=True,
         validate=validate.Range(1, min_inclusive=True))
+
+
+class ScheduleOrderSchema(Schema):
+    class Meta:
+        unknown = EXCLUDE
+
+    order = fields.List(
+        fields.Nested(OrderItemSchema),
+        required=True)
+
+
+class GetScheduledOrderSchema(ScheduleOrderSchema):
+    id = fields.UUID(required=True)
+    scheduled = fields.DateTime(required=True)
+    status = fields.String(
+        required=True,
+        validate=validate.OneOf(["pending", "progress", "cancelled", " finished"]))
+
+
+class GetScheduledOrdersSchema(Schema):
+    class Meta:
+        unknown = EXCLUDE
+        schedules = fields.List(fields.Nested(
+            GetScheduledOrderSchema), required=True)
+
+
+class ScheduleStatusSchema(Schema):
+    class Meta:
+        unknown = EXCLUDE
+
+    status = fields.String(
+        required=True,
+        validate=validate.OneOf(["pending", "progress", "cancelled", " finished"]))
