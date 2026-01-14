@@ -11,25 +11,6 @@ def generate_uuid():
     return str(uuid.uuid4)
 
 
-class OrderItemModel(Base):
-    __tablename__ = 'order_item'
-
-    id = Column(String, primary_key=True, default=generate_uuid())
-    order_id = Column(Integer, primary_key=True, default=generate_uuid)
-    order_id = Column(Integer, ForeignKey('order.id'))
-    product = Column(String, nullable=False)
-    size = Column(String, nullable=False)
-    quantity = Column(Integer, nullable=False)
-
-    def dict(self):
-        return {
-            'id': self.id,
-            'product': self.product,
-            'size': self.size,
-            'quantity': self.quantity
-        }
-
-
 class OrderModel(Base):
     __tablename__ = 'order'
 
@@ -48,6 +29,25 @@ class OrderModel(Base):
             'created': self.created,
             'schedule_id': self.schedule_id,
             'delivery_id': self.delivery_id,
+        }
+
+
+class OrderItemModel(Base):
+    __tablename__ = 'order_item'
+
+    id = Column(String, primary_key=True, default=generate_uuid())
+    order_id = Column(Integer, primary_key=True, default=generate_uuid)
+    order_id = Column(Integer, ForeignKey('order.id'))
+    product = Column(String, nullable=False)
+    size = Column(String, nullable=False)
+    quantity = Column(Integer, nullable=False)
+
+    def dict(self):
+        return {
+            'id': self.id,
+            'product': self.product,
+            'size': self.size,
+            'quantity': self.quantity
         }
 
 # This created migration files
