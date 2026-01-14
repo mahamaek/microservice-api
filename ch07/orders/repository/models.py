@@ -30,7 +30,7 @@ class OrderModel(Base):
             'schedule_id': self.schedule_id,
             'delivery_id': self.delivery_id,
         }
-
+        
 
 class OrderItemModel(Base):
     __tablename__ = 'order_item'
