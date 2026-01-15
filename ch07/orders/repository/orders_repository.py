@@ -5,7 +5,7 @@ from orders.orders_service import Order
 from orders.repository.models import OrderItemModel, OrderModel
 
 
-class OrderRepository:
+class OrdersRepository:
     def __init__(self, session: Any) -> None:
         """session: a DB session / ORM session (e.g. SQLAlchemy Session)."""
         self.session = session
