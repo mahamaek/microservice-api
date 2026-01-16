@@ -1,0 +1,8 @@
+type {
+    id: ID! 
+    name: String!
+    price: Float
+    available: Bolean!
+    hasFilling: Boolean!
+    hasNutToppingOption: Bolean!
+}
