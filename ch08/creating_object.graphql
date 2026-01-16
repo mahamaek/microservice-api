@@ -1,4 +1,4 @@
-type {
+type Cake {
     id: ID! 
     name: String!
     price: Float
