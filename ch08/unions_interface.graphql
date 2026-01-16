@@ -1,0 +1,43 @@
+
+type IngredientRecipe {
+    ingredient: Ingredient!
+    quantity: Float!
+    unit: String!
+}
+
+interface ProductInterface {
+    id: ID!
+    name: String
+    price: Float
+    ingredients: [IngredientRecipe!]
+    available: Boolean
+    lastUpdated: Datetime
+}
+
+
+type Cake implements ProductInterface {
+    id: ID!
+    name: String
+    price: Float
+    ingredients: [IngredientRecipe!]
+    available: Boolean
+    lastUpdated: Datetime 
+    hasFilling: Boolean!
+    hasNutToppingOption: Boolean! 
+}
+
+type Beverage implements ProductInterface {
+    id: ID!
+    name: String
+    price: Float
+    ingredients: [IngredientRecipe!]
+    available: Boolean
+    lastUpdated: Datetime 
+    hasCreameTopOption: Boolean!
+    hasServeOnIceOption: Boolean!
+}
+
+
+# union types
+
+union Product = Beverage | Cake
