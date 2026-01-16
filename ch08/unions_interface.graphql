@@ -2,7 +2,13 @@
 type IngredientRecipe {
     ingredient: Ingredient!
     quantity: Float!
-    unit: String!
+    unit: MeasurementUnit!
+}
+
+enum MeasurementUnit {
+    LITERS
+    KILOGRAMS
+    UNITS
 }
 
 interface ProductInterface {
