@@ -1,0 +1,5 @@
+type Ingredient {
+    id: ID!
+    name: String!
+    description: [String!]
+}
