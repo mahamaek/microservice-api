@@ -1,0 +1,15 @@
+type Ingredient {
+    id: ID!
+    name: String!
+    description: [String!]
+    supplier: Supplier # Edge property ()
+}
+
+type Supplier {
+    id: ID!
+    name: String!
+    address: String!
+    contactNumber: String
+    email: String
+    ingredients: [Ingredient!]! # A supplie supplies multiple ingredients
+}
