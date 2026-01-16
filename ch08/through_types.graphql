@@ -1,0 +1,33 @@
+#Through types tell us how other object are connection
+# They add addition information about the connection itself
+# Here IngredientRecipe is the through type
+scalar Datetime
+
+
+type Cake {
+    id: ID! 
+    name: String!
+    price: Float
+    available: Boolean!
+    hasFilling: Boolean!
+    hasNutToppingOption: Boolean!
+    lastUpdated: Datetime!
+    ingredients: [Ingredient!]!
+}
+
+type Beverage {
+    id: ID!
+    name: String!
+    price: Float
+    available: Boolean!
+    hasCreameTopOption: Boolean!
+    hasServeOnIceOption: Boolean!
+    lastUpdated: Datetime!
+    ingredients: [Ingredient!]!
+}
+
+type IngredientRecipe {
+    ingredient: Ingredient!
+    quantity: Float!
+    unit: String!
+}
