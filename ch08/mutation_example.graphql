@@ -1,0 +1,59 @@
+# Mutations are operation that trigger actions that alter the state of a resource on the server
+enum ProductType {
+    CAKE
+    BEVERAGE
+}
+
+input IngredientRecipeInput{
+    ingredient: ID!
+    quantity: Float
+    unit: MeasurementUnit
+}
+
+enum Sizes {
+    SMALL
+    MEDIUM
+    BIG
+}
+
+type Mutation {
+    addProduct(
+        name: String!
+        type: ProductType
+        price: String
+        size: Sizes
+        ingredients: [IngredientRecipe!]!
+        hasFilling: Boolean = false
+        hasCreameTopOption: Boolean = false
+        hasNutToppingOption: Boolean = false
+        hasServeOnIceOption: Boolean = false
+    ): Product!
+}
+
+# using input
+
+input AddProductInput {
+        price: String
+        size: Sizes
+        ingredients: [IngredientRecipe!]!
+        hasFilling: Boolean = false
+        hasCreameTopOption: Boolean = false
+        hasNutToppingOption: Boolean = false
+        hasServeOnIceOption: Boolean = false
+}
+
+type Mutation {
+    addProduct(
+        name: String!
+        type: ProductType!
+        input: AddProductInput!
+    ): Product!
+}
+
+type Mutation {
+    updateProduct(id:ID!, input: AddProductInput!): Product!
+}
+
+type Mutation{
+    deleteProduct(id: ID!): Boolean
+}
