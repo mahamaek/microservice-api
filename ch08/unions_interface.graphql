@@ -13,7 +13,7 @@ enum MeasurementUnit {
 
 interface ProductInterface {
     id: ID!
-    name: String
+    name: String!
     price: Float
     ingredients: [IngredientRecipe!]
     available: Boolean
@@ -23,7 +23,7 @@ interface ProductInterface {
 
 type Cake implements ProductInterface {
     id: ID!
-    name: String
+    name: String!
     price: Float
     ingredients: [IngredientRecipe!]
     available: Boolean
@@ -34,7 +34,7 @@ type Cake implements ProductInterface {
 
 type Beverage implements ProductInterface {
     id: ID!
-    name: String
+    name: String!
     price: Float
     ingredients: [IngredientRecipe!]
     available: Boolean
