@@ -1,0 +1,40 @@
+type Query {
+    allProducts: [Product!]!
+}
+
+enum sortingOrder {
+    ASCENDING
+    DESCENDING
+}
+
+# query will filters
+type Query {
+    products(
+        available: Boolean = true
+        maxPrice: Float
+        minPrice: Float,
+        sort: sortingOrder = DESCENDING
+        resultsPerPage:int = 10
+        page: Int = 1
+        ): [Product!]!
+}
+
+# input types
+
+
+input ProductsFilter {
+        available: Boolean = true
+        maxPrice: Float
+        minPrice: Float,
+        sort: sortingOrder = DESCENDING
+        resultsPerPage:int = 10
+        page: Int = 1    
+}
+
+type Query {
+    allProducts: [Product!]!
+    allIngredients: [Ingredient!]!
+    products(input: ProductsFilter) # refactored all the input parameters into a input type
+    product(id: ID!): Product
+    ingredients(id: ID!): Ingredient
+}
