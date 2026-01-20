@@ -1,0 +1,41 @@
+
+POST http://localhost:9002/graphql
+Content-Type: application/json
+
+{
+  "query": "{ allIngredients { name id } }"
+}
+
+###
+
+POST http://localhost:9002/graphql
+Content-Type: application/json
+
+{
+  "query": "{ products: allProducts { ...on ProductInterface { name } ...on Cake { available } } ingredients: allIngredients { name id } }"
+}
+
+###
+
+POST http://localhost:9002/graphql
+Content-Type: application/json
+
+{
+  "query": "query GetProduct($id: ID!) { product(id: $id) { ...on ProductInterface { name } } }",
+  "variables": {
+    "id": "example-id"
+  }
+}
+
+###
+
+POST http://localhost:9002/graphql
+Content-Type: application/json
+
+{
+  "query": "mutation AddProduct($name: String!, $type: ProductType!) { addProduct(name: $name, type: $type, input: { ingredients: [] }) { ...on ProductInterface { name } } }",
+  "variables": {
+    "name": "New Product",
+    "type": "cake"
+  }
+}
