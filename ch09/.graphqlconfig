@@ -1,0 +1,16 @@
+{
+  "name": "Microservice API GraphQL",
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "http://localhost:9002/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": true
+        
+      }
+    }
+  }
+}
