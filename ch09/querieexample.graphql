@@ -1,0 +1,212 @@
+## Running queries with no parameters
+
+# {
+#   ingredients: allIngredients {
+#     id
+#     name
+#   }
+# }
+
+# {
+#   ingredient(id: "asdf") {
+#     name
+#   }
+  
+# }
+
+### Interpreting errors
+# {
+#   ingredient() {
+#   }
+# }
+
+# {
+#   ingredient {
+#     name
+#   }
+# }
+
+## Using Fragments in query
+# {
+#   allProducts {
+#     ...on ProductInterface {
+#       name
+#     }
+#     ...on Cake {
+#       hasNutsToppingOption
+#     }
+#     ...on Beverage {
+#       hasServeOnIceOption
+#     }
+#   } 
+# }
+
+## Using standalone fragments
+# fragment commonProperties on ProductInterface {
+#   name
+# }
+
+# fragment cakeProperties on Cake {
+#   hasFilling
+# }
+
+# fragment beverageProperties on Beverage {
+#   hasServeOnIceOption
+# }
+
+# {
+#   allProducts {
+#     ...commonProperties
+#     ...cakeProperties
+#     ...beverageProperties
+#   }
+  
+# }
+
+### Running Queries with parameters
+# {
+#   ingredient(id: "asdf") {
+#     name
+#   }
+# }
+
+# {
+#   product(id: "asdf") {
+#     ...on ProductInterface {
+#       name
+#     }
+#     ...on Cake {
+#       hasFilling
+#     }
+#   }
+# }
+
+# {
+#   product(id: "asdf") {
+#     ...on ProductInterface {
+#       name
+#     }
+#     ...on Beverage {
+#       hasCreamOnTopOption
+#     }
+#   }
+# }
+
+## Running queries with input parameters
+
+
+# {
+# 	products(input: {maxPrice: 10}) {
+#     ...on ProductInterface {
+#       name
+#     }
+#     ...on Cake {
+#       hasFilling
+#     }
+#     ...on Beverage {   bnm 
+#       hasCreamOnTopOption
+#     }
+#   }
+# }
+
+## Navigating the API graph
+# {
+#   allProducts {
+#     ...on ProductInterface {
+#       name
+#       ingredients {
+#         ingredient {
+#           name
+#           supplier {
+#             name
+#           }
+          
+#         }
+#       }
+#     }
+#   }
+# }
+
+
+### Muitiple queries in same request and aliasing
+
+# {
+#   allProducts {
+#     ...on ProductInterface {
+#       name
+#     }
+#     ...on Cake {
+#       available
+#     }
+#   }
+  
+#   allIngredients {
+#     name
+#     id
+#   }
+# }
+
+### Aliasting
+
+{
+  products:	allProducts {
+    ...on ProductInterface {
+      name
+    }
+    ...on Cake {
+      available
+    }
+  }
+  
+  ingredients:	allIngredients {
+    name
+    id
+  }
+}
+
+
+## Running parameterized query
+mutation CreateProduct($name: String!, $type: ProductType!, $input: AddProductInput!){
+  addProduct(name:$name, type: $type, input: $input)
+  {
+    ...on ProductInterface {
+      name
+    }
+  }
+}
+
+{
+	"name": "mochaaaa",
+	"type": "beverage",
+	"input": {
+    "price": 10,
+    "size": "BIG",
+    "ingredients": [{"ingredient": 1, "quantity": 1, "unit": "LITERS"}]
+  }
+}
+
+mutation CreateAndDeleteProduct($name: String!, $type: ProductType!, $id: ID!, $input: AddProductInput!){
+  addProduct(name:$name, type: $type, input: $input)
+  {
+    ...on ProductInterface {
+      name
+    }
+  }
+  deleteProduct(id: $id)
+}
+
+{
+	"name": "mochaaaa",
+	"type": "beverage",
+  "id": "asdf",
+	"input": {
+    "price": 10,
+    "size": "BIG",
+    "ingredients": [{"ingredient": 1, "quantity": 1, "unit": "LITERS"}]
+  }
+}
+
+## curl with url encode
+
+curl http://localhost:9002/graphql --data-urlencode 'query={allIngredients{name}}'
+curl -X POST http://localhost:9002/graphql --data-urlencode
