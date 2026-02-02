@@ -11,7 +11,7 @@ def generate_jwt():
         "iss": "https://auth.coffeemesh.io/",
         "sub": "ec7bbccf-ca89-4af3-82ac-b41e4831a962",
         "aud": "http://127.0.0.1:8000/orders",
-        "iat": now.timestamp(),
+        # "iat": now.timestamp(),
         "exp": (now + timedelta(hours=24)).timestamp(),
         "scope": "openid",
     }
