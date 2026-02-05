@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Union
 from uuid import UUID
 
-from orders.orders_service import Order
+from orders.orders_service.orders import Order
 from orders.repository.models import OrderItemModel, OrderModel
 
 
