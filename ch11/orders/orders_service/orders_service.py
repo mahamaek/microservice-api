@@ -1,4 +1,4 @@
-from ch07.orders.orders_service.orders import Order
+from orders.orders_service.orders import Order
 from orders.orders_service.exceptions import OrderNotFoundError
 from orders.repository.orders_repository import OrdersRepository
 
