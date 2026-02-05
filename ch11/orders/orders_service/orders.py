@@ -1,6 +1,6 @@
 import requests
 
-from exceptions import APIIntegrationError, InvalidActionError
+from .exceptions import APIIntegrationError, InvalidActionError
 
 
 class OrderItem:
