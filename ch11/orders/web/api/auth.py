@@ -3,8 +3,15 @@ import jwt
 
 from cryptography.x509 import load_pem_x509_certificate
 
-public_key_text = Path((__file__).parent(
-    "../../../public_key.pem")).read_text()
+# read public key from ch11 project root
+key_path = Path(__file__).resolve().parents[3] / "public_key.pem"
+if not key_path.exists():
+    raise FileNotFoundError(
+        f"public_key.pem not found at {key_path}.\n"
+        "Create it in the project root (see ch11/readme.txt) using:\n"
+        "openssl req -x509 -nodes -newkey rsa:2048 -keyout private_key.pem -out public_key.pem -subj \"/CN=coffeemesh\""
+    )
+public_key_text = key_path.read_text()
 public_key = load_pem_x509_certificate(public_key_text.encode()).public_key()
 
 
