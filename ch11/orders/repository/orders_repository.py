@@ -10,21 +10,22 @@ class OrdersRepository:
         """session: a DB session / ORM session (e.g. SQLAlchemy Session)."""
         self.session = session
 
-    def add(self, items: Sequence[Mapping[str, Any]]) -> Order:
+    def add(self, items: Sequence[Mapping[str, Any]], user_id) -> Order:
         """Create a new OrderModel from a sequence of item mappings.
 
         items: iterable of dict-like objects with keys matching OrderItemModel
         """
         record: OrderModel = OrderModel(
-            items=[OrderItemModel(**item) for item in items])
+            items=[OrderItemModel(**item) for item in items],
+            user_id=user_id)
         self.session.add(record)
         return Order(**record.dict(), order_=record)
 
-    def _get(self, id_: Union[str, UUID]) -> Optional[OrderModel]:
-        return self.session.query(OrderModel).filter(OrderModel.id == str(id_)).first()
+    def _get(self, id_: Union[str, UUID], **filters) -> Optional[OrderModel]:
+        return self.session.query(OrderModel).filter(OrderModel.id == str(id_)).filter_by(**filters).first()
 
-    def get(self, id_: Union[str, UUID]) -> Optional[Order]:
-        order = self._get(id_)
+    def get(self, id_: Union[str, UUID], **filters) -> Optional[Order]:
+        order = self._get(id_, **filters)
         if order is not None:
             return Order(**order.dict())
         return None
