@@ -15,6 +15,7 @@ class OrderModel(Base):
     __tablename__ = 'order'
 
     id = Column(String, primary_key=True, default=generate_uuid)
+    user_id = Column(String, nullable=False)
     items = relationship('OrderItemModel', backref='order')
     status = Column(String, nullable=False, default='created')
     created = Column(DateTime, default=datetime.utcnow)
@@ -30,7 +31,7 @@ class OrderModel(Base):
             'schedule_id': self.schedule_id,
             'delivery_id': self.delivery_id,
         }
-        
+
 
 class OrderItemModel(Base):
     __tablename__ = 'order_item'
