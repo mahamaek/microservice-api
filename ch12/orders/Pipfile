@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = "*"
+starlette = "*"
+pyyaml = "*"
+
+[dev-packages]
+pyyaml = "*"
+
+[requires]
+python_version = "3.13"
