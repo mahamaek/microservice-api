@@ -18,3 +18,13 @@ openssl x509 -pubkey -noout < public_key.pem > pubkey.perm
 echo eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9| base64 --decode
 
 3. We can also use python base64 library
+
+
+# login python on cmd line to clear the db
+# from orders.repository.orders_repository import OrdersRepository
+# from orders.repository.unit_of_work import UnitOfWork
+# with UnitOfWork() as unit_of_work:
+#      orders_repository = OrdersRepository(unit_of_work.session)
+#      orders = orders_repository.list()
+#      for order in orders: order.delete(order.id)
+#      unit_of_work.commit()
