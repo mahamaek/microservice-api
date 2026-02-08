@@ -60,3 +60,36 @@ def before_cancel_order(transaction):
     id = response.json()['id']
     transaction["fullPath"] = f"orders/{id}/cancel"
     transaction["request"]["uri"] = f"orders/{id}/cancel"
+
+
+@dredd_hooks.before("/orders > Creates an order > 422 > application/json")
+def fail_create_order(transaction):
+    transaction['request']['body'] = json.dumps(
+        {"order": [{"product": "string", "size": "asdf"}]}
+    )
+
+
+@dredd_hooks.before(
+    "/orders/{order_id} > Returns the details of a specific order > 422 > "
+    "application/json"
+)
+@dredd_hooks.before(
+    "/orders/{order_id}/cancel > Cancels an order > 422 > application/json"
+)
+@dredd_hooks.before(
+    "/orders/{order_id}/pay > Processes payment for an order > 422 > "
+    "application/json"
+)
+@dredd_hooks.before(
+    "/orders/{order_id} > Replaces an existing order > 422 > " "application/json"
+)
+@dredd_hooks.before(
+    "/orders/{order_id} > Deletes an existing order > 422 > " "application/json"
+)
+def fail_target_specific_order(transaction):
+    transaction["fullPath"] = transaction["fullPath"].replace(
+        "d222e7a3-6afb-463a-9709-38eb70cc670d", "8"
+    )
+    transaction["request"]["uri"] = transaction["request"]["uri"].replace(
+        "d222e7a3-6afb-463a-9709-38eb70cc670d", "8"
+    )
