@@ -12,6 +12,9 @@ cryptography = "*"
 pyjwt = "*"
 uvicorn = "*"
 requests = "*"
+pytest = "*"
+dredd-hooks = "*"
+schemathesis = "*"
 
 [dev-packages]
 

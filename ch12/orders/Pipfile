@@ -8,6 +8,9 @@ fastapi = "*"
 uvicorn = "*"
 starlette = "*"
 pyyaml = "*"
+pytest = "*"
+dredd-hooks = "*"
+schemathesis = "*"
 
 [dev-packages]
 pyyaml = "*"
