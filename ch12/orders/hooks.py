@@ -5,7 +5,7 @@ import requests
 response_stash = {}
 
 
-@dredd_hooks.after('/orders > Creates an order > 200 > application/json')
+@dredd_hooks.after('/orders > Creates an order > 201 > application/json')
 def save_created_order(transaction):
     response_payload = transaction['real']['body']
     order_id = json.loads(response_payload)
