@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import UUID
 import uuid
 from http import HTTPStatus
@@ -13,7 +13,7 @@ from orders.api.schemas import CreateOrderSchema, GetOrdersSchema, GetOrderSchem
 
 order = {
 
-'id': 'ff0f1355-e821-4178-9567-550dec27a373',
+    'id': 'ff0f1355-e821-4178-9567-550dec27a373',
     'status': "delivered",
     'created': datetime.utcnow(),
     'order': [
@@ -113,7 +113,7 @@ ORDERS = [
 
 
 @app.get('/orders', response_model=GetOrdersSchema)
-def get_orders(cancelled: Optional[bool] = None, limit: Optional[int]=None):
+def get_orders(cancelled: Optional[bool] = None, limit: Optional[int] = None):
     if cancelled is None and limit is None:
         return {"orders": ORDERS}
     query_set = [order for order in ORDERS]
@@ -121,27 +121,27 @@ def get_orders(cancelled: Optional[bool] = None, limit: Optional[int]=None):
     if cancelled is not None:
         if cancelled:
             query_set = [
-                order 
+                order
                 for order in query_set
                 if order['status'] == 'cancelled'
             ]
         else:
             query_set = [
-                order 
+                order
                 for order in query_set
                 if order['status'] != 'cancelled'
-            ]  
-    if limit is not None and len(query_set)> limit:
-        return {'orders': query_set[:limit]}  
+            ]
+    if limit is not None and len(query_set) > limit:
+        return {'orders': query_set[:limit]}
 
-    return {'orders': query_set}          
+    return {'orders': query_set}
 
 
 @app.post('/orders', status_code=status.HTTP_201_CREATED, response_model=GetOrderSchema)
 def create_order(order_details: CreateOrderSchema):
     order = order_details.model_dump()
     order['id'] = uuid.uuid4()
-    order['created'] = datetime.utcnow()
+    order['created'] = datetime.now(timezone.utc).replace(microsecond=0)
     order['status'] = 'created'
     ORDERS.append(order)
     return order
@@ -155,8 +155,8 @@ def get_order(order_id: UUID):
         raise HTTPException(
             status_code=404, detail=f"Order with ID {order_id} not found"
         )
-    
-    
+
+
 @app.put('/orders/{order_id}', response_model=GetOrderSchema)
 def update_order(order_id: UUID, order_details: CreateOrderSchema):
     for order in ORDERS:
@@ -168,16 +168,16 @@ def update_order(order_id: UUID, order_details: CreateOrderSchema):
     )
 
 
-
-@app.delete('/orders/{order_id}',status_code=status.HTTP_204_NO_CONTENT)
+@app.delete('/orders/{order_id}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_order(order_id: UUID):
     for index, order in enumerate(ORDERS):
         if order['id'] == order_id:
             ORDERS.pop(index)
             return Response(status_code=HTTPStatus.NO_CONTENT.value)
     raise HTTPException(
-            status_code=404, detail=f"Order with ID {order_id} not found"
-            )
+        status_code=404, detail=f"Order with ID {order_id} not found"
+    )
+
 
 @app.post('/orders/{order_id}/cancel', response_model=GetOrderSchema)
 def cancel_order(order_id: UUID):
@@ -188,6 +188,7 @@ def cancel_order(order_id: UUID):
         raise HTTPException(
             status_code=404, detail=f"Order with ID {order_id} not found"
         )
+
 
 @app.post('/orders/{order_id}/pay', response_model=GetOrderSchema)
 def pay_order(order_id: UUID):
