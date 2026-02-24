@@ -5,10 +5,10 @@ name = "pypi"
 
 [packages]
 requests = "*"
-ariadne = "*"
 uvicorn = "*"
 pytest = "*"
 schemathesis = "*"
+ariadne = "*"
 
 [dev-packages]
 

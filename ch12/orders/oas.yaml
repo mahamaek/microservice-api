@@ -65,6 +65,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetOrderSchema'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 
@@ -175,6 +177,12 @@ paths:
 
 components:
   responses:
+    BadRequest:
+      description: The request is malformed or contains invalid data.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     NotFound:
       description: The specified resource was not found.
       content:
