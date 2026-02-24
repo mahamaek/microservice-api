@@ -5,10 +5,12 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field, conlist, conint, field_validator, ConfigDict
 
+
 class Size(Enum):
     small = 'small'
     medium = 'medium'
     big = 'big'
+
 
 class Status(Enum):
     created = 'created'
@@ -21,7 +23,7 @@ class Status(Enum):
 class OrderItemSchema(BaseModel):
     product: str
     size: Size
-    quantity: Annotated[int, Field(strict=True, ge=1)] = 1
+    quantity: Annotated[int, Field(strict=True, ge=1, le=1000000)] = 1
 
     model_config = ConfigDict(extra='forbid')
 
@@ -30,10 +32,11 @@ class OrderItemSchema(BaseModel):
         if value is None:
             raise ValueError('quantity may not be None')
         return value
-    
+
+
 class CreateOrderSchema(BaseModel):
     order: Annotated[List[OrderItemSchema], Field(min_items=1)]
-    
+
     model_config = ConfigDict(extra='forbid')
 
 
@@ -42,7 +45,10 @@ class GetOrderSchema(CreateOrderSchema):
     created: datetime
     status: Status
 
+    model_config = ConfigDict(extra='forbid', json_encoders={
+                              datetime: lambda v: v.isoformat()})
+
+
 class GetOrdersSchema(BaseModel):
     # orders: Annotated[List[GetOrderSchema], Field(min_items=0)]
     orders: List[GetOrderSchema]
-
