@@ -36,9 +36,15 @@ def resolve_product_ingredients(product, _):
     recipe = [copy.copy(ingredient)
               for ingredient in product.get("ingredients", [])]
     for ingredient_recipe in recipe:
+        ingredient_id = ingredient_recipe.get("ingredient")
         for ingredient in ingredients:
-            if ingredient["id"] == ingredient_recipe["ingredient"]:
-                ingredient_recipe["ingredient"] = ingredient
+            if str(ingredient["id"]) == str(ingredient_id):
+                ingredient_copy = copy.copy(ingredient)
+                # Ensure lastUpdated exists
+                if ingredient_copy.get("lastUpdated") is None:
+                    ingredient_copy["lastUpdated"] = datetime.utcnow()
+                ingredient_recipe["ingredient"] = ingredient_copy
+                break
     return recipe
 
 
@@ -55,14 +61,16 @@ def resolve_supplier_ingredient(supplier, _):
     return [
         ingredient
         for ingredient in ingredients
-        if ingredient['id'] == ingredient.get('suppliers', [])
+        if ingredient.get('supplier') == supplier['id']
     ]
 
 
 @ingredient_type.field("products")
 def resolve_ingredient_products(ingredient, _):
-    return [
-        product
-        for product in products
-        if ingredient["id"] in product.get("ingredients", [])
-    ]
+    result = []
+    for product in products:
+        for ingredient_recipe in product.get("ingredients", []):
+            if str(ingredient_recipe.get("ingredient")) == str(ingredient["id"]):
+                result.append(product)
+                break
+    return result
