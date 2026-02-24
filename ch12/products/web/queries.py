@@ -53,7 +53,8 @@ def resolve_products(*_, input=None):
     if input.get('sort') is not None and input.get('sortBy') is not None:
         try:
             filtered.sort(
-                key=lambda product: (product.get(input['sortBy']) or '', type(product.get(input['sortBy'])).__name__),
+                key=lambda product: (product.get(input['sortBy']) or '', type(
+                    product.get(input['sortBy'])).__name__),
                 reverse=input['sort'] == 'DESCENDING'
             )
         except (TypeError, KeyError):
