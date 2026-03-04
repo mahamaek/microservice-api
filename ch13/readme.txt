@@ -28,3 +28,5 @@ echo eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9| base64 --decode
 #      orders = orders_repository.list()
 #      for order in orders: order.delete(order.id)
 #      unit_of_work.commit()
+
+# docker build -t orders:1.0 .
